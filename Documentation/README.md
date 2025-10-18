@@ -1,170 +1,93 @@
-# Projet Sécurité Informatique 1
+# 🧠 Projet – Système de détection d’anomalies & gestion de logs
 
-## Contexte et objectif du projet
+Bienvenue dans le dépôt du projet **Système de détection d’anomalies et de gestion de logs**, réalisé dans le cadre du module de cybersécurité.  
+Ce projet a pour objectif de **concevoir une architecture complète de détection**, de **collecte** et de **visualisation** d’incidents de sécurité à partir des journaux système, réseau et applicatifs.
 
-Ce projet vise à concevoir et démontrer un système de détection d'anomalies et de gestion de logs destiné à identifier et traiter des incidents de sécurité dans un environnement applicatif.
-L'objectif pédagogique est de montrer la collecte, le traitement, la corrélation et la visualisation des observables issus d’une infrastructure (systèmes, réseau, applications, DB, AV) afin de détecter des scénarios d’attaque (ex. bruteforce, port-scans, DDoS, injections, uploads suspects) et déclencher des actions ou alertes appropriées.
+---
 
-Livrables attendus (synthèse)
+## 🎯 Objectif du projet
 
-Artefacts de collecte et traitement des logs (templates / pipelines / mappings).
+Mettre en place une infrastructure capable de :
+- **Collecter** des logs provenant de différentes sources (serveurs, réseau, applications).  
+- **Détecter** des comportements suspects ou malveillants via des règles d’analyse (IDS/IPS).  
+- **Corréler** les événements dans une base centralisée (Elasticsearch).  
+- **Visualiser et alerter** via des tableaux de bord interactifs (Kibana).  
 
-Règles de détection réseau et logs (Snort/Suricata, Wazuh), avec justification.
+Le but final est de démontrer la **détection de plusieurs scénarios d’attaque simulés**, d’analyser les logs correspondants et de proposer des contre-mesures adaptées.
 
-Jeux de logs de test et scripts d’émulation safe pour valider les règles.
+---
 
-Templates Kibana (dashboards + alertes) montrant corrélations et incidents.
+## 🧩 Architecture globale
 
-Documentation méthodologique, plan de tests, et preuves (captures, indicateurs TP/FP).
+L’architecture repose sur une chaîne d’outils interconnectés :  
 
-## Exigences fonctionnelles (résumé)
+[ Sources de logs ]
+↓
+Syslog-ng
+↓
+Snort / Wazuh
+↓
+Elasticsearch
+↓
+Kibana
 
-Collecte structurée des logs depuis : systèmes (auth), serveurs web/app, pare-feu, IDS/IPS, bases de données, pipeline d’upload/AV.
 
-Normalisation & enrichissement : parsers (grok/ingest), ajout GEO/ASN, parsing user-agent, hashing/metadata pour uploads.
+Chaque composant joue un rôle précis dans la détection et la gestion des logs 👇
 
-Stockage & indexation : Elasticsearch avec mappings explicites par type de log.
+---
 
-Détection : signatures réseau (Snort/Suricata) + règles SIEM/HIDS (Wazuh) + règles d’alerting Kibana (agrégations & seuils).
+## 🛠️ Outils utilisés et leur rôle
 
-Visualisation & alerting : dashboards Kibana et règles de notification (webhook, e-mail, Slack).
+### 🔹 **Syslog-ng**
+> *Collecte et centralise les logs depuis toutes les sources.*
 
-Automatisation : playbooks simples (script de blocage, quarantaine de fichier, ticketing).
+- Reçoit les journaux système, réseau et applicatifs.  
+- Formate, normalise et redirige les logs vers Elasticsearch.  
+- Sert de **point d’entrée unique** de la chaîne de détection.
 
-Sécurité & conformité : tests confinés en labo isolé, fichiers de test inoffensifs, traçabilité des runs.
+---
 
-## Architecture fonctionnelle (haut-niveau)
+### 🔹 **Snort** *(ou Suricata)*
+> *IDS/IPS — analyse du trafic réseau en temps réel.*
 
-Sources : hosts (syslog), web/app logs, DB logs, pare-feu, Suricata/Snort alerts, AV/Sandbox results, NetFlow/pcap.
+- Inspecte les paquets réseau pour repérer des signatures d’attaque.  
+- Détecte des comportements anormaux (scans, tentatives d’exploitation, DoS…).  
+- Génère des alertes envoyées vers le système de logs central.
 
-Collecte : syslog-ng / Filebeat (forwarders) → flux centralisé.
+---
 
-Processing : Logstash / Elasticsearch ingest pipelines — parsing, normalisation, enrichissements (geoip, TI), tagging.
+### 🔹 **Elasticsearch**
+> *Base de données et moteur d’analyse.*
 
-Stockage : Elasticsearch indices (par catégorie : logs-app-*, logs-auth-*, suricata-*, etc.).
+- Stocke tous les logs collectés sous forme structurée.  
+- Permet la **recherche rapide**, la **corrélation d’événements** et les **agrégations temporelles**.  
+- Sert de cœur analytique de la plateforme.
 
-Détection réseau : Snort/Suricata (signatures/heuristiques) → alerts envoyées vers SIEM.
+---
 
-SIEM/HIDS & corrélation : Wazuh (règles basées logs + corrélations temporelles).
+### 🔹 **Kibana**
+> *Interface de visualisation et d’alerting.*
 
-Visualisation & alerting : Kibana dashboards + alerting (Watcher/Rules) → notifications / webhooks.
+- Permet de créer des **dashboards interactifs** à partir des données d’Elasticsearch.  
+- Configure des **alertes automatiques** (e-mail, Slack, webhook) selon des seuils ou des anomalies.  
+- Fournit la **vue globale** sur la sécurité du système.
 
-Automation : scripts de réponse (ex. block-IP, quarantine file), orchestrés via webhooks.
+---
 
-## Observables & logs prioritaires
+## 🧠 Fonctionnement général
 
-Pour une couverture efficace, collecter au minimum :
+1. **Les machines et applications** génèrent des logs (connexion, erreur, upload, etc.).  
+2. **Syslog-ng** collecte et normalise ces logs.  
+3. **Snort** surveille le trafic réseau et crée des alertes lors d’activités suspectes.  
+4. Tous les événements sont **indexés dans Elasticsearch** pour stockage et corrélation.  
+5. **Kibana** permet de visualiser, filtrer, agréger et déclencher des alertes automatiques.  
 
-Auth / système : auth.log, journal, événements d’ouverture de session, échecs/succès.
+L’ensemble forme un **SIEM** (Security Information and Event Management) simplifié et reproductible.
 
-Web / application : accès (method, URI, status), body (si possible), user-id, request_time.
+---
 
-Pare-feu / réseau : connexions (src/dst/ports/proto/action), NetFlow/IPFIX.
+## 📎 Liens vers les autres documents du projet
 
-IDS/IPS : alertes, signature id, flux associés.
+- 🔗 [**Installation des outils pour le projet**](./Installation.md)   
 
-Base de données : erreurs, requêtes longues, rows_returned, user.
-
-Upload / AV : filename, mime, hash, scan_verdict.
-
-Métriques : bande passante, connections simultanées, erreurs 5xx.
-Chaque log doit contenir des champs normalisés (@timestamp, host, service, client.ip, user, message, etc.) pour faciliter corrélation.
-
-## Détection & règles (approche)
-
-Signature réseau (Snort/Suricata) : détection d’indices réseau (scans, payloads typiques, flags TCP anormaux).
-
-Règles Wazuh : détection basée logs (ex. bruteforce : X échecs en T minutes), corrélations multi-sources (upload suspect + accès).
-
-Alerting Kibana : règles basées sur agrégations temporelles (count, rate, percentiles), détection d’anomalies (baseline × seuil).
-
-Automatisation : webhooks déclenchent scripts (bloquer IP, isoler VM, créer ticket).
-
-Remarque : les règles doivent être paramétrables et calibrées sur une baseline — commencer en mode pédagogique puis ajuster les seuils.
-
-## Critères d’évaluation (ce que la correction cherchera)
-
-Preuve que la collecte couvre les sources demandées et que les champs critiques existent dans ES.
-
-Présence de règles Snort/Suricata pertinentes et non-exploitantes.
-
-Règles Wazuh & alertes Kibana qui détectent les scénarios définis (avec justification des seuils).
-
-Dashboards montrant corrélations et preuves d’alertes (captures).
-
-Jeux de logs et plan de test permettant de reproduire / valider (traçabilité des runs).
-
-Présence de playbooks / actions automatiques simples (ex. webhook simulé).
-
-Documentation de justification (pour chaque règle : pourquoi, risques de FP, tuning conseillé).
-
-## Structure proposée du dépôt (arborescence détaillée)
-
-Utiliser cette structure pour organiser les artefacts du projet — chaque dossier contient des fichiers annotés et prêts à être utilisés par le correcteur.
-
-/
-├─ README.md                              # (ce fichier)
-├─ docs/
-│  ├─ architecture.md                      # Diagrammes, description détaillée des flux
-│  ├─ detection_strategy.md                # Règles, justification des seuils, tuning
-│  ├─ tests_plan.md                        # Protocole d’exécution safe et runbook
-│  └─ grading_map.md                       # Correspondance livrables ↔ barème
-│
-├─ configs/
-│  ├─ syslog-ng/                           # Snippets et exemples de parsers (commentés)
-│  ├─ logstash/ or ingest-pipelines/       # Ingest pipelines (grok, date, enrich)
-│  ├─ elasticsearch/
-│  │  └─ mappings/                         # mappings JSON pour indices
-│  ├─ wazuh_rules/                         # règles Wazuh (JSON) avec commentaires
-│  └─ snort_suricata/                      # signatures et exemples (non-exploitants)
-│
-├─ kibana/
-│  ├─ dashboards/                          # exports ndjson (dashboards, visualizations)
-│  └─ alerts/                              # rules / watcher templates (JSON)
-│
-├─ tests/
-│  ├─ logs_sample/                         # jeux de logs structurés (JSON) par scénario
-│  ├─ simulation_scripts/                  # scripts d’émulation safe (Python)
-│  └─ baseline_metrics/                    # fichiers de référence pour calibrage
-│
-├─ automation/
-│  ├─ responders/                          # exemples : block-ip.sh, slack_webhook.py
-│  └─ ci/                                  # validators (ndjson lint, jsonschema checks)
-│
-├─ reports/
-│  ├─ screenshots/                         # captures d’écran Kibana, diagrammes
-│  └─ final_report.pdf                     # rapport final (optionnel)
-│
-├─ LICENSE
-└─ CONTRIBUTING.md                         # Processus PR / revue / règles d’éthique
-
-## Checklist minimale à fournir lors du rendu
-
- Diagramme d’architecture (docs/architecture.md).
-
- Indices & mappings Elasticsearch (configs/elasticsearch/mappings).
-
- Règles Snort/Suricata et Wazuh (configs/) + justification.
-
- Jeux de logs test (tests/logs_sample/) + runbook (docs/tests_plan.md).
-
- Dashboards Kibana et captures (kibana/ + reports/screenshots/).
-
- Playbooks / scripts d’automatisation (automation/).
-
- Fichier grading_map.md liant chaque livrable au barème.
-
-## Bonnes pratiques & points d’attention
-
-Isolation : toutes les simulations doivent être réalisées dans un labo isolé.
-
-Non-malignité : n’inclure aucun malware réel ; utiliser données inoffensives ou verdicts simulés.
-
-Traçabilité : conserver logs d’exécution et paramètres de test (tests/run_YYYYMMDD_*.md).
-
-Tuning : documenter justification des seuils choisis et les étapes de calibrage (baseline → ajustement).
-
-
-Toute règle/signature doit être revue pour s’assurer qu’elle reste non-exploitante.
-
-Mainteneur : à compléter (équipe / e-mail / rôle) avant rendu final.
+- 🔗 [**Explication des scénarios**](./Scenarios.md) 
