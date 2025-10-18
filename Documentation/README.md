@@ -47,7 +47,7 @@ Chaque composant joue un rôle précis dans la détection et la gestion des logs
 
 ---
 
-### 🔹 **Snort** *(ou Suricata)*
+### 🔹 **Snort**
 > *IDS/IPS — analyse du trafic réseau en temps réel.*
 
 - Inspecte les paquets réseau pour repérer des signatures d’attaque.  
