@@ -94,7 +94,7 @@ Dans le cadre de ce projet, nous avons mis en place une infrastructure complète
 
 - L’ensemble des composants nécessaires à la collecte et à la centralisation des logs a été correctement déployé :
 
-- Syslog reçoit et stocke les journaux des systèmes et applications (SSH, Apache, pare-feu, IDS…).
+- Syslog reçoit et stocke les journaux des systèmes et applications.
 
 - Les scénarios d’attaques (brute force, scan de ports, DDoS, injection SQL et upload malveillant) ont tous été simulés avec succès, générant des traces réelles exploitables.
 
@@ -107,7 +107,7 @@ Dans le cadre de ce projet, nous avons mis en place une infrastructure complète
 Le seul élément non fonctionnel à ce stade concerne la transmission des logs de Syslog vers Elasticsearch, nécessaire pour l’indexation et la visualisation dans Kibana. Cette anomalie empêche la création automatique des tableaux de bord et la génération en temps réel des visualisations prévues.
 
 Le dysfonctionnement provenait probablement d'un manque de compréhension des transferts de données entre les deux outils.
-Cependant, cette panne n’affecte ni la collecte locale des logs, ni la capacité du système à détecter les attaques. Les preuves de détection ont été établies manuellement par analyse des journaux (grep, awk, tail, etc.) et par l’étude directe des fichiers /var/log, ce qui démontre la robustesse de la chaîne de détection même sans la brique d’indexation.
+Cependant, cette panne n’affecte ni la collecte locale des logs, ni la capacité du système à détecter les attaques. Les preuves de détection ont été établies manuellement par analyse des journaux, ce qui démontre la robustesse de la chaîne de détection même sans la brique d’indexation.
 
 ### Mesures compensatoires
 
