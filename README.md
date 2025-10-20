@@ -86,6 +86,61 @@ L’ensemble forme un **SIEM** (Security Information and Event Management) simpl
 
 ---
 
+## 🔄 Analyse et Conclusion
+
+Dans le cadre de ce projet, nous avons mis en place une infrastructure complète de collecte, corrélation et détection d’événements de sécurité, fondée sur l’écosystème Syslog – Elasticsearch – Kibana – Snort. L’objectif principal était de démontrer la capacité du système à identifier et interpréter différents types d’attaques, à partir de logs hétérogènes provenant des serveurs, pare-feux et applications.
+
+### Fonctionnalités opérationnelles :
+
+- L’ensemble des composants nécessaires à la collecte et à la centralisation des logs a été correctement déployé :
+
+- Syslog reçoit et stocke les journaux des systèmes et applications (SSH, Apache, pare-feu, IDS…).
+
+- Les scénarios d’attaques (brute force, scan de ports, DDoS, injection SQL et upload malveillant) ont tous été simulés avec succès, générant des traces réelles exploitables.
+
+- Les règles de détection et de corrélation ont été validées à partir de ces logs : par exemple, la détection d’un nombre anormal d’échecs d’authentification sur SSH, ou d’un grand nombre de ports sondés sur une courte période.
+
+- Le moteur IDS a produit des alertes pertinentes, confirmant la bonne intégration du volet détection.
+
+### Limite rencontrée : la liaison Syslog ↔ Elasticsearch
+
+Le seul élément non fonctionnel à ce stade concerne la transmission des logs de Syslog vers Elasticsearch, nécessaire pour l’indexation et la visualisation dans Kibana. Cette anomalie empêche la création automatique des tableaux de bord et la génération en temps réel des visualisations prévues.
+
+Le dysfonctionnement provenait probablement d'un manque de compréhension des transferts de données entre les deux outils.
+Cependant, cette panne n’affecte ni la collecte locale des logs, ni la capacité du système à détecter les attaques. Les preuves de détection ont été établies manuellement par analyse des journaux (grep, awk, tail, etc.) et par l’étude directe des fichiers /var/log, ce qui démontre la robustesse de la chaîne de détection même sans la brique d’indexation.
+
+### Mesures compensatoires
+
+Pour pallier ce problème, nous avons exporté les logs au format brut et analysé les indicateurs manuellement.
+Ces mesures ont permis de valider la logique de détection et d’assurer la continuité du projet malgré la panne technique.
+
+### Conclusion générale
+
+Ce projet a permis de mettre en pratique l’ensemble des compétences liées à la supervision de la sécurité :
+
+- collecte et centralisation des logs,
+
+- détection et corrélation d’incidents,
+
+- analyse et interprétation des événements,
+
+- et documentation méthodique d’une infrastructure SIEM.
+
+Malgré le dysfonctionnement du lien Syslog–Elasticsearch, les objectifs pédagogiques essentiels ont été atteints :
+
+- La chaîne de détection fonctionne et produit des résultats concrets.
+
+- Les scénarios d’attaque ont été exécutés et correctement identifiés via les traces générées.
+
+- La méthodologie de traitement des incidents et la démarche d’analyse de logs ont été validées.
+
+- La documentation du projet témoigne d’une bonne compréhension du fonctionnement global d’un système SIEM.
+
+En conclusion, le projet atteint son objectif de démonstration :
+il illustre clairement la détection proactive d’incidents de sécurité à partir de sources multiples, et met en évidence la capacité à analyser et exploiter les logs même sans l’aide d’un outil de visualisation automatisé.
+
+---
+
 ## 📎 Liens vers les autres documents du projet
 
 - 🔗 [**Installation des outils pour le projet**](./Documentation/Installation.md)   
