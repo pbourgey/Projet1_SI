@@ -139,6 +139,9 @@ Malgré le dysfonctionnement du lien Syslog–Elasticsearch, les objectifs péda
 En conclusion, le projet atteint son objectif de démonstration :
 il illustre clairement la détection proactive d’incidents de sécurité à partir de sources multiples, et met en évidence la capacité à analyser et exploiter les logs même sans l’aide d’un outil de visualisation automatisé.
 
+<img width="821" height="311" alt="diagramme_fonctionnel2" src="https://github.com/user-attachments/assets/c9ee8ba5-45c5-4da6-9799-8f79fc1f1832" />
+
+
 ---
 
 ## 📎 Liens vers les autres documents du projet
