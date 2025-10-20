@@ -88,8 +88,8 @@ L’ensemble forme un **SIEM** (Security Information and Event Management) simpl
 
 ## 📎 Liens vers les autres documents du projet
 
-- 🔗 [**Installation des outils pour le projet**](./Installation.md)   
+- 🔗 [**Installation des outils pour le projet**](./Documentation/Installation.md)   
 
-- 🔗 [**Explication des scénarios**](./Scenarios.md) 
+- 🔗 [**Explication des scénarios**](./Documentation/Scenarios.md) 
 
-- 🔗 [**Guide d'utilisation**](./Utilisation.md) 
+- 🔗 [**Guide d'utilisation**](./Documentation/Utilisation.md) 
