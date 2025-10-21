@@ -31,7 +31,14 @@ sleep 1
 done  
 
 ## Résultat 
-Aucun résultat
+### Nous pouvons voir ici que l'attaque s'est bien effectué
+<img width="1503" height="23" alt="AttaqueBF" src="https://github.com/user-attachments/assets/b717a8b8-41bd-4c11-a508-568914a68888" />
+
+### Le serveur web a bien reçu les nombreuses requêtes de l'attaquant
+<img width="868" height="597" alt="HTTPServerBF" src="https://github.com/user-attachments/assets/48b692ea-4de0-4019-8d1e-3ede7c0e40bd" />
+
+### Malheureusement Snort n'a pas envoyé d'alerte...
+<img width="632" height="82" alt="RésultatBF" src="https://github.com/user-attachments/assets/c14f2bcd-fe5d-4354-a62c-d0c45edd9d7c" />
 
 ---
 
@@ -75,6 +82,14 @@ curl -G "http://192.168.10.1/search" --data-urlencode "q=select"
 
 ## Résultat 
 
+### Nous pouvons voir ici que l'attaque s'est bien effectué et l'utilisateur a obtenu la page demandée
+<img width="797" height="305" alt="AttaqueSQL" src="https://github.com/user-attachments/assets/1be25fc2-d2f6-40e4-a9d0-726ad4d3b3da" />
+
+### Le serveur web a bien reçu la requête de l'attaquant et lui a répondu
+<img width="781" height="152" alt="HTTPServerSQL" src="https://github.com/user-attachments/assets/6058394a-3771-44e5-9c76-12416de7a870" />
+
+### On retrouve le log d'alerte envoyé par Snort dans snort.log
+<img width="1202" height="116" alt="RésultatSQL" src="https://github.com/user-attachments/assets/2da765ab-7469-447a-baa3-a91ad2c46f83" />
 
 ---
 
@@ -90,7 +105,17 @@ alert tcp $EXTERNAL_NET any -> $HOME_NET $HTTP_PORTS (msg: "DETECT - Suspicious 
 curl -s -X POST "http://192.168.10.1/upload" -F "file=@/dev/null:filename=profile.php" -o /dev/null
 
 ## Résultat 
-Aucun résultat
+
+### L'attaque est bien lancé
+<img width="1153" height="53" alt="AttaqueUP" src="https://github.com/user-attachments/assets/9dc75a85-122a-4090-9e0b-66217ff801e2" />
+
+### Le serveur HTTP ne reçoit pas la requête
+<img width="645" height="80" alt="HTTPServerUP" src="https://github.com/user-attachments/assets/afe4e49e-56eb-45aa-854e-3149c127ca8e" />
+
+### Il est donc logique que Snort ne puisse pas envoyer d'alerte
+<img width="633" height="188" alt="RésultatUP" src="https://github.com/user-attachments/assets/a61631a1-c0f1-4848-a4ff-680c5e917bd0" />
+
+
 
 ---
 
