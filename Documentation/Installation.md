@@ -144,13 +144,13 @@ Dans le fichier /etc/syslog-ng/syslog-ng.conf :
 Ajouter les lignes suivantes :   
 
 destination d_elasticsearch_http {  
-|    elasticsearch-http(  
+    elasticsearch-http(  
         index("syslog-ng")  
         type("")  
         url("http://localhost:9200/_bulk")  
         template("$(format-json --scope rfc5424 --scope dot-nv-pairs  
-        --rekey .* --shift 1 --scope nv-pairs  
-        --exclude DATE --key ISODATE @timestamp=${ISODATE})")  
+        \-\-rekey .* --shift 1 --scope nv-pairs  
+        \-\-exclude DATE --key ISODATE @timestamp=${ISODATE})")  
     );  
 };  
   
