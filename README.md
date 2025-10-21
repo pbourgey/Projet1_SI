@@ -21,15 +21,15 @@ Le but final est de démontrer la **détection de plusieurs scénarios d’attaq
 
 L’architecture repose sur une chaîne d’outils interconnectés :  
 
-[ Sources de logs ]
-↓
-Syslog-ng
-↓
-Snort / Wazuh
-↓
-Elasticsearch
-↓
-Kibana
+[ Sources de logs ]  
+↓  
+Syslog-ng  
+↓  
+Snort / Wazuh  
+↓  
+Elasticsearch  
+↓  
+Kibana  
 
 
 Chaque composant joue un rôle précis dans la détection et la gestion des logs 👇
