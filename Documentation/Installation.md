@@ -1,29 +1,31 @@
-# Projet1_SI
-projet 1 de sécurité informatique à l'UQAC
+# GUIDE D'INSTALLATION DES DIFFERENTS OUTILS
 
-Projet SI
-## Machine 
+---
+
+## Caractéristique VM
 Hyperviseur : VirtualBox
 OS : Ubuntu 24
 RAM : 8192 Mo
 Processeurs : 4
 
-## Mise en place environnement :
+---
 
+## Mise en place environnement :
 $ sudo apt update && sudo apt upgrade 
 
-========================================
+---
 
-## Mise en place Snort :
+## Déploiement de Snort :
 
-$ sudo apt install snort
--> Address range for the local network : 192.168.0.0/16
+1) Dans un terminal de la VM : $ sudo apt install snort
 
-Vérif installation : 
+2) Une fenêtre apparaît, à la question : Address range for the local network, mettre la plage d'adresse suivante : 192.168.0.0/16
+
+3) Vérification de l'installation : 
 $ snort -V
--> 29
+-> On doit trouver la version : 2.9.x
 
-Test mode IDS :
+4) Test du mode IDS :
 Console 1 : 
 $ mkdir ~/snort-test
 $ cd ~/snort-test
@@ -32,6 +34,8 @@ $ sudo snort -A console -q -c ~/snort-test/local.rules -i lo
 
 Console 2 :
 $ ping localhost
+
+Nous devons voir des logs sous la forme suivante dans Console 1 : 
 [**] [1:1000001:1] Ping detected [**] ...
 
 ========================================
